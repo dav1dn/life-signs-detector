@@ -1,0 +1,108 @@
+@import '_mixins';
+
+.LifeSignMap {
+    position: relative;
+    background-size: 20px 20px;
+    background-image: 
+        linear-gradient(to right, $accent-4 0.5px, transparent 1px),linear-gradient(to bottom, $accent-4 0.5px, transparent 1px)
+    ;
+    border: 1px solid $accent-2;
+
+    &:after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        flex-grow: 1;
+        background-size: 100px 100px;
+        background-image: linear-gradient(to right, $accent-3 1px, transparent 1px), linear-gradient(to bottom, $accent-3 1px, transparent 1px)
+    ;
+        z-index: 2;
+
+    }
+}
+.LifeSignMapDot {
+    display: block;
+    position: absolute;
+    height: 11px;
+    width: 11px;
+    border-radius: 50%;
+    background-color: $accent-1;
+    z-index: 5;
+    animation: dotPulse 2s infinite;
+    font-style: normal;
+    .LifeSignMapDot__label {
+        display: inline-block;
+        position: absolute; 
+        content: 'Hello';
+        background-color: $accent-1;
+        opacity: .7;
+
+        &.--upper { bottom: 0; }
+        &.--lower { }
+        &.--left { margin-left: auto; right: 16px;}
+        &.--right { left: 16px; }
+        font-size: 8pt;
+        padding: 0 4px;
+    }
+}
+
+.LifeSignMapSector {
+    background-color: $accent-4;
+    opacity: .1;
+    animation: 750ms ease 1s infinite normal none running gridPulse;
+}
+
+@keyframes gridPulse {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: .38;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes dotPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba($accent-1, .9);
+    }
+
+    60% {
+        box-shadow: 0 0 0 12px rgba($accent-3, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba($accent-3, 0);
+    }
+}
+
+
+@keyframes bigDotPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba($accent-1, .9);
+    }
+
+    60% {
+        box-shadow: 0 0 0 75px rgba($accent-3, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba($accent-3, 0);
+    }
+}
+
+.DotTransition-appear {
+    box-shadow: 0 0 0 0 rgba($accent-1, .8);
+}
+
+.DotTransition-appear.DotTransition-appear-active {
+    animation: 2s bigDotPulse;
+}

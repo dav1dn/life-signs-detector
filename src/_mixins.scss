@@ -1,0 +1,21 @@
+@font-face {
+  font-family: 'Nitti';
+  src: local('Nitti'), url(./Nitti.woff2) format('woff2');
+} 
+
+@mixin flexbox($dir, $wrap, $justify, $align) {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: $dir $wrap;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+// colors
+$background-color: #0a0000;
+$accent-1: #4ACEDD;
+$accent-2: #1B9DAA;
+$accent-3: #025865;
+$accent-4: #003F4E;

@@ -1,0 +1,52 @@
+@import '_mixins';
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Nitti';
+  background-color: $background-color;
+}
+.Container {
+  height: 100vh;
+  width: 100vw;
+  @include flexbox(row, nowrap, flex-start, flex-start);
+}
+
+.LifeSignListContainer {
+  height: 100%;
+  flex: 2 0 25%;
+  min-width: 300px;
+  border-right: 1px solid $accent-4;  
+  z-index: 3;
+  @include flexbox(column, nowrap, flex-start, flex-start);
+}
+
+.LifeSignMapContainer {
+  > div { 
+    @include flexbox(column, nowrap, center, center);
+  }
+  flex: 1 1 100%;
+  height: 100%;
+  margin-left: -1px;
+}
+
+.RightSidebar {
+  flex: 2 0 25%;
+  height: 100%;
+  min-width: 300px;
+  border-left: 1px solid $accent-4;
+  z-index:3;
+}
+
+.BarTick {
+  display: inline-block;
+  height: 20px;
+  width: 10px; 
+  border: 1px solid $accent-2;
+  margin-right: -1px;
+  line-height: 20px;
+
+  &.FullBarTick {
+    background-color: $accent-2;
+  }
+}

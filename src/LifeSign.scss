@@ -1,0 +1,64 @@
+@import '_mixins';
+
+.LifeSign {
+    padding: 8px 16px;
+    border-bottom: 1px solid $accent-4;  
+    .LifeSign__name { 
+        font-size: 20pt;
+        line-height: 12pt;
+        margin: 8pt 0 0;
+        color: $accent-1;
+        &.LifeSign__name--known {
+            margin-bottom: 0;
+        }
+    }
+
+    .LifeSign__subname {
+        font-size: 10pt;
+        color: $accent-3;
+    }
+}
+
+.LifeSign__signalStrength {
+    @include flexbox(row, nowrap, space-between, center);
+    .signalStrength__info {
+        font-size: 16pt;
+        color: $accent-2;
+        padding-right: 16px;
+        > span {
+            font-size: 10pt;
+        }
+    }
+
+    .signalStrength__bar {
+        margin: 0;
+        padding: 0;
+        height: 20px;
+    }
+}
+
+.ListItemTransition-appear {
+  background-color: $accent-1;
+}
+
+.ListItemTransition-appear.ListItemTransition-appear-active {
+    animation: 500ms blink;
+}
+
+.ListItemTransition-leave {
+  opacity: 1;
+}
+
+.ListItemTransition-leave.ListItemTransition-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
+
+@keyframes blink {
+    0% { background-color: $accent-1;}
+    25% { background-color: rgba($accent-1, 0.4); }
+    40% { background-color: rgba($accent-1, 0.75); }
+    50% { background-color: rgba($accent-1, 0.3); }
+    80% { background-color: rgba($accent-1, 0.1); }
+    100% { background-color: rgba($accent-1, 0); }
+}

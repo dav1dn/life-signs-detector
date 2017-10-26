@@ -5,6 +5,7 @@ body {
   padding: 0;
   font-family: 'Nitti';
   background-color: $background-color;
+  overflow: hidden;
 }
 .Container {
   height: 100vh;
@@ -18,6 +19,7 @@ body {
   min-width: 300px;
   border-right: 1px solid $accent-4;  
   z-index: 3;
+  overflow-y: scroll;
   @include flexbox(column, nowrap, flex-start, flex-start);
 }
 

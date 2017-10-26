@@ -9,21 +9,35 @@ const URL = '';
 class App extends Component {
   constructor(props) {
     super(props);
+    this.fetchData = this.fetchData.bind(this);
     this.state = {
       lifeSigns: null,
     }
   }
 
+  updateFromServer() {
+    this.fetchData()
+      .then((res) => {
+        this.setState({lifeSigns: this.processData(res)})
+      }
+    );
+  }
+
   componentDidMount() {
-    this.fetchData().then((res) => {
-      this.setState({
-        lifeSigns: this.processData(res),
-      });
-    });
+    // this.fetchData().then((res) => {
+    //   this.setState({
+    //     lifeSigns: this.processData(res),
+    //   });
+    // });
+    this.updateFromServer();
+
+    this.timer = setInterval(
+      () => { this.updateFromServer(); },
+      5000
+    );
   }
 
   toggleState() {
-    
     const exampleData = [
       {
         bssid: '4A:5D:4C:EA:64:52',
@@ -38,7 +52,7 @@ class App extends Component {
       {
         bssid: 'BC:14:01:F2:F6:28',
         station: '18:5E:0F:F2:EB:76',
-        pwr: '-33',
+        pwr: '-37',
         rate: '0 - 2e',
         lost: '0',
         frames: '1',
@@ -88,26 +102,33 @@ class App extends Component {
   }
 
   fetchData() {
-    // fetch(URL)
-    //   .then(res => res.json());
-    return new Promise((res, rej) => {
-      res({"status":200,"clients":{"B4:99:BA:0A:87:DE":{"bssid":"4A:5D:4C:EA:64:52","station":"B4:99:BA:0A:87:DE","pwr":"-81","rate":"0 - 1","lost":"1","frames":"2","probe":"","lastSeen":1508823732088},"18:5E:0F:F2:EB:76":{"bssid":"BC:14:01:F2:F6:28","station":"18:5E:0F:F2:EB:76","pwr":"-67","rate":"0 - 2e","lost":"0","frames":"1","probe":"","lastSeen":1508823742378},"18:B4:30:2A:24:42":{"bssid":"BC:14:01:F2:F6:28","station":"18:B4:30:2A:24:42","pwr":"-68","rate":"0 - 2","lost":"0","frames":"1","probe":"","lastSeen":new Date(), "name":"Richard"}}});
-    })
+    return fetch('http://192.168.0.110:7070/clients',
+      { method: 'GET',
+        headers: new Headers().append('Accept', 'application/json'),
+      })
+        .then(function(res) { return res.json(); })
+        .then(function(json) { return json; });
+        
+    // return new Promise((res, rej) => {
+    //   res({"status":200,"clients":{"B4:99:BA:0A:87:DE":{"bssid":"4A:5D:4C:EA:64:52","station":"B4:99:BA:0A:87:DE","pwr":"-81","rate":"0 - 1","lost":"1","frames":"2","probe":"","lastSeen":1508823732088},"18:5E:0F:F2:EB:76":{"bssid":"BC:14:01:F2:F6:28","station":"18:5E:0F:F2:EB:76","pwr":"-67","rate":"0 - 2e","lost":"0","frames":"1","probe":"","lastSeen":1508823742378},"18:B4:30:2A:24:42":{"bssid":"BC:14:01:F2:F6:28","station":"18:B4:30:2A:24:42","pwr":"-68","rate":"0 - 2","lost":"0","frames":"1","probe":"","lastSeen":new Date(), "name":"Richard"}}});
+    // })
   }
 
   processData(res) {
     let data = Object.keys(res.clients).map(key => res.clients[key]);    
     // wew
     for (let lifeSign in data) {
-      let minutesAgo = Math.floor((new Date().getTime() - new Date(data[lifeSign].lastSeen)) / 1000 / 60);
+      let minutesAgo = Math.floor((new Date() - new Date(data[lifeSign].lastSeen)) / 1000 / 60);
       if (minutesAgo > 60) {
         let hoursAgo = Math.floor(minutesAgo / 60);
-        data[lifeSign].lastSeen = `${hoursAgo} hour${hoursAgo !== 1 ? 's' : ''} ago`;
-      } else if (minutesAgo < 5) {
-        data[lifeSign].lastSeen = 'Active Now';
+        data[lifeSign].lastSeenString = `${hoursAgo} hour${hoursAgo !== 1 ? 's' : ''} ago`;
+      } else if (minutesAgo < 2) {
+        data[lifeSign].lastSeenString = 'Active Now';
       } else {
-        data[lifeSign].lastSeen = `${minutesAgo} minutes ago`;
+        data[lifeSign].lastSeenString = `${minutesAgo} minutes ago`;
       }
+
+      data[lifeSign].timeAgo = minutesAgo;
 
       if (data[lifeSign].pwr < -100) { data[lifeSign].pwr = -100; }
       if (data[lifeSign].pwr > -30) { data[lifeSign].pwr = -30; } 
@@ -135,8 +156,8 @@ class App extends Component {
           </div>
           <RightSidebar
               lifeSigns={this.state.lifeSigns}
-              >          <div className="Button" style={{color: '#fff'}} onClick={() => this.toggleState()}>Hello</div>
-</RightSidebar>
+              >  
+          </RightSidebar>
         </div>
       );
     }

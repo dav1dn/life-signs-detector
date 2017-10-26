@@ -69,7 +69,7 @@ export default class LifeSign extends React.Component {
             <span className="signalStrength__bar">{signalStrengthBar}</span>            
           </div>
           <div className="LifeSign__lastSeen LifeSign__subname">
-            Last Seen: {this.props.lastSeen}
+            Last Seen: {this.props.lastSeenString}
           </div>
         </div>
       </li>

@@ -34,14 +34,14 @@
     z-index: 5;
     animation: dotPulse 2s infinite;
     font-style: normal;
-    transition: all 500ms ease;
+    transition: all 1000ms ease;
     .LifeSignMapDot__label {
         display: inline-block;
         position: absolute; 
         content: 'Hello';
         background-color: $accent-1;
         opacity: .7;
-
+        white-space: nowrap;
         &.--upper { bottom: 0; }
         &.--lower { }
         &.--left { margin-left: auto; right: 16px;}
@@ -100,10 +100,29 @@
     }
 }
 
+@keyframes redDisappear {
+    0% {
+        background-color: red;
+        opacity: .9;
+    }
+
+    100% {
+        opacity: 0.1;
+    }
+}
+
 .DotTransition-appear {
     box-shadow: 0 0 0 0 rgba($accent-1, .8);
 }
 
 .DotTransition-appear.DotTransition-appear-active {
     animation: 2s bigDotPulse;
+}
+
+.DotTransition-leave {
+    background-color: red;
+}
+
+.DotTransition-leave.DotTransition-leave-active {
+    animation: 2s redDisappear;
 }

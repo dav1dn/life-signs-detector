@@ -11,12 +11,12 @@ class LifeSignMap extends React.Component {
       PropTypes.shape({
         bssid: PropTypes.string.isRequired,
         station: PropTypes.string.isRequired,
-        pwr: PropTypes.string.isRequired,
+        pwr: PropTypes.number.isRequired,
         rate: PropTypes.string.isRequired,
         lost: PropTypes.string.isRequired,
         frames: PropTypes.string.isRequired,
         probe: PropTypes.string,
-        lastSeen: PropTypes.string,  
+        lastSeen: PropTypes.number,  
       }),     
     ),
   }
@@ -30,7 +30,6 @@ class LifeSignMap extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     this.setState({
       dots: this.makeDots(nextProps.lifeSigns),
     });
@@ -55,7 +54,8 @@ class LifeSignMap extends React.Component {
 
     let angle;
     if (oldAngle) { 
-      angle = oldAngle + (Math.random()*0.5 * (Math.floor(Math.random()*2) == 1 ? 1 : -1));
+      angle = oldAngle;
+      //angle = oldAngle + (Math.random()*0.1 * (Math.floor(Math.random()*2) == 1 ? 1 : -1));
     } else {
       angle = Math.floor(Math.random() * 360) * Math.PI / 180;
     } 
@@ -91,8 +91,8 @@ class LifeSignMap extends React.Component {
       let position = '';
       if (y > size / 2 - 30) { position += '--upper'; }
       else { position += '--lower'; }
-      if (x < 0) { position += ' --right'; }
-      else { position += ' --left' };
+      if (x < 0 ) { position += ' --left'; }
+      else { position += ' --right' };
 
 
       dotsArray.push(<LifeSignMapDot key={client.station} angle={angle} top={y} left={x} size={size} name={name} position={position}/>);
@@ -165,10 +165,11 @@ class LifeSignMapDot extends React.Component {
       transform: `translate(${this.props.left}px, ${this.props.top}px)`,
       top: +(this.props.size / 2),
       left: +(this.props.size / 2),
+      transitionDelay: `${Math.random()*1000}ms`,
     }
 
     return (
-      <CSSTransitionGroup transitionName="DotTransition" transitionAppearTimeout={2500} transitionLeaveTimeout={250} transitionAppear={true} transitionEnter={false}>
+      <CSSTransitionGroup transitionName="DotTransition" transitionAppearTimeout={2500} transitionLeaveTimeout={2500} transitionAppear={true} transitionEnter={false}>
       <i className="LifeSignMapDot" style={styles}>
         <div className={`LifeSignMapDot__label ${this.props.position}`}>{this.props.name}</div>
       </i>

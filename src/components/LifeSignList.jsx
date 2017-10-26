@@ -21,6 +21,7 @@ export default class LifeSignList extends React.Component {
   }
 
   render() {
+    
     const lifeSigns = this.props.lifeSigns
           .sort((a, b) => b.pwr - a.pwr) // sort by signal str
           .map((lifesign, index) => (

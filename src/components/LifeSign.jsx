@@ -26,7 +26,9 @@ export default class LifeSign extends React.Component {
     // with 10 steps, each step represents a -7 chg
     const adjustedDBm = +dBm + 100;
     // full strength = 70, min strength = 0
-    const strength = Math.floor(adjustedDBm / 7);
+    let strength = Math.floor(adjustedDBm / 7);
+    if (strength > 70) { strength = 70; }
+    if (strength < 0) { strength = 0; }
 
     let barArray = [];
     for (let i = 0; i < strength; i++) {
